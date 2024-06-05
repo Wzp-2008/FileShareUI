@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: ">=20.11.1"
       - name: 下载PNPM
-        run: npm install pnpm
+        run: npm install -g pnpm
       - name: 下载项目依赖
         run: pnpm install
       - name: 构建项目
