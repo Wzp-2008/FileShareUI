@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches: [ "v2" ]
+  pull_request:
+    branches: [ "v2" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: 克隆项目
+        with:
+          ref: v2
+      - uses: actions/setup-node@v4
+        name: 创建nodejs环境
+        with:
+          node-version: ">=20.11.1"
+      - name: 下载PNPM
+        run: npm install pnpm
+      - name: 下载项目依赖
+        run: pnpm install
+      - name: 构建项目
+        run: pnpm run build
+      - name: 将项目压缩为zip
+        run: cd dist && zip -r ../result.zip . && cd ..
+      - name: 创建版本
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: 上传构建后的文件
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: v${{ github.ref }}.zip
+          asset_content_type: application/zip
