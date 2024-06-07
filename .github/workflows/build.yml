@@ -12,6 +12,7 @@ jobs:
         name: 克隆项目
         with:
           ref: v2
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
         name: 创建nodejs环境
         with:
