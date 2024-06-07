@@ -1,0 +1,15 @@
+:root {
+    --header-height: 5vh;
+    --aside-width: 10vw;
+    --container-width: calc(100vh - var(--header-height));
+    --main-width: calc(100vw - var(--aside-width));
+}
+@media screen and (max-height: 800px) {
+    :root {
+        --header-height: 4vh;
+    }
+}
+body {
+    margin: 0;
+    padding: 0;
+}
