@@ -6,7 +6,7 @@ on:
     branches: [ "v2" ]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: node:16-bullseye
     steps:
       - uses: actions/checkout@v4
         name: 克隆项目
