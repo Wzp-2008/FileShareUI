@@ -23,28 +23,33 @@ jobs:
         run: pnpm install
       - name: 构建项目
         run: pnpm run build
-      - name: 将项目压缩为zip
-        run: cd dist && zip -r ../result.zip . && cd ..
-      - name: 创建版本
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 上传编译后文件
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: dev-0.${{github.run_number}}
-          release_name: dev-0.${{github.run_number}}
-          draft: false
-          prerelease: false
-      - name: debug
-        run: echo ${{ steps.create_release.outputs.upload_url }}
-      - name: debug2
-        run: echo ${{github.run_number}}
-      - name: 上传构建后的文件
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./result.zip
-          asset_name: dev-0.${{github.run_number}}.zip
-          asset_content_type: application/zip
+          name: web-file
+          path: ./dist/
+        #- name: 将项目压缩为zip
+        #  run: cd dist && zip -r ../result.zip . && cd ..
+        #- name: 创建版本
+        #  id: create_release
+        #  uses: actions/create-release@v1
+        #  env:
+        #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #  with:
+        #    tag_name: dev-0.${{github.run_number}}
+        #    release_name: dev-0.${{github.run_number}}
+        #    draft: false
+        #    prerelease: false
+        #- name: debug
+        #  run: echo ${{ steps.create_release.outputs.upload_url }}
+        #- name: debug2
+        #  run: echo ${{github.run_number}}
+        #- name: 上传构建后的文件
+        #  uses: actions/upload-release-asset@v1
+        #  env:
+        #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #  with:
+        #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+        #    asset_path: ./result.zip
+        #    asset_name: dev-0.${{github.run_number}}.zip
+        #    asset_content_type: application/zip
